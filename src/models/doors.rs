@@ -1,5 +1,5 @@
 use super::_entities::doors::{self, ActiveModel, Entity};
-use loco_rs::model::ModelResult;
+use loco_rs::model::{ModelError, ModelResult};
 use sea_orm::entity::prelude::*;
 use sea_orm::{ActiveValue, TransactionTrait};
 use serde::{Deserialize, Serialize};
@@ -55,6 +55,17 @@ impl super::_entities::doors::Model {
 
     pub async fn add_for_user(db: &DatabaseConnection, params: &NewDoorParam) -> ModelResult<Self> {
         let txn = db.begin().await?;
+
+        if doors::Entity::find()
+            .filter(doors::Column::DoorIdStr.eq(&params.door_id_str))
+            .filter(doors::Column::UserPid.eq(params.user_pid))
+            .one(&txn)
+            .await?
+            .is_some()
+        {
+            return Err(ModelError::EntityAlreadyExists {});
+        }
+
         let row = doors::ActiveModel {
             door_id: ActiveValue::set(params.door_id.to_string()),
             control_type: ActiveValue::set(params.control_type),
