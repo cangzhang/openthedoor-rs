@@ -16,7 +16,7 @@ impl MigrationTrait for Migration {
                     .col(string(Doors::DoorIdStr))
                     .col(integer(Doors::CommunityId))
                     .col(integer(Doors::DoorType))
-                    .col(string(Doors::Token))
+                    .col(string_null(Doors::Token))
                     .col(uuid_null(Doors::UserPid))
                     .to_owned(),
             )
@@ -42,4 +42,3 @@ enum Doors {
     Token,
     UserPid,
 }
-
