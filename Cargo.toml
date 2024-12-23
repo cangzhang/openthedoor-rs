@@ -37,6 +37,7 @@ include_dir = "0.7"
 # view engine i18n
 fluent-templates = { version = "0.8.0", features = ["tera"] }
 unic-langid = "0.9.4"
+reqwest = {version = "0.12.9", features = ["json"] }
 # /view engine
 
 [[bin]]

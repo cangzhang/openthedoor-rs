@@ -1,8 +1,9 @@
-use super::_entities::doors::{self, ActiveModel, Entity};
 use loco_rs::model::{ModelError, ModelResult};
 use sea_orm::entity::prelude::*;
 use sea_orm::{ActiveValue, TransactionTrait};
 use serde::{Deserialize, Serialize};
+
+use super::_entities::doors::{self, ActiveModel, Entity};
 
 pub type Doors = Entity;
 
@@ -79,5 +80,17 @@ impl super::_entities::doors::Model {
         .await?;
         txn.commit().await?;
         Ok(row)
+    }
+
+    pub async fn find_door_for_user(
+        db: &DatabaseConnection,
+        id: i32,
+        user_pid: Uuid,
+    ) -> ModelResult<Option<Self>> {
+        let query = doors::Entity::find()
+            .filter(doors::Column::Id.eq(id))
+            .filter(doors::Column::UserPid.eq(user_pid));
+        let item = query.one(db).await?;
+        Ok(item)
     }
 }
