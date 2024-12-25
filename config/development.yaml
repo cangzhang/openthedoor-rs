@@ -18,18 +18,21 @@ logger:
 server:
   # Port on which the server will listen. the server binding is 0.0.0.0:{PORT}
   port: 5150
+  binding: 0.0.0.0
   # The UI hostname or IP address that mailers will point to.
   host: http://localhost
   # Out of the box middleware configuration. to disable middleware you can changed the `enable` field to `false` of comment the middleware block
-  middlewares: 
-    static:
-      enable: true
-      must_exist: true
-      precompressed: false
-      folder:
-        uri: "/static"
-        path: "assets/static"
-      fallback: "assets/static/404.html"
+  middlewares:
+    cors:
+        enable: true
+    # static:
+    #   enable: false
+    #   must_exist: false
+      # precompressed: false
+      # folder:
+      #   uri: "/static"
+      #   path: "assets/static"
+      # fallback: "assets/static/404.html"
 
 # Worker Configuration
 workers:
@@ -39,20 +42,20 @@ workers:
   #   - BackgroundAsync - Workers operate asynchronously in the background, processing tasks with async capabilities.
   mode: BackgroundAsync
 
-  
+
 
 # Mailer Configuration.
-mailer:
-  # SMTP mailer configuration.
-  smtp:
-    # Enable/Disable smtp mailer.
-    enable: true
-    # SMTP server host. e.x localhost, smtp.gmail.com
-    host: localhost
-    # SMTP server port
-    port: 1025
-    # Use secure connection (SSL/TLS).
-    secure: false
+# mailer:
+#   # SMTP mailer configuration.
+#   smtp:
+#     # Enable/Disable smtp mailer.
+#     enable: true
+#     # SMTP server host. e.x localhost, smtp.gmail.com
+#     host: localhost
+#     # SMTP server port
+#     port: 1025
+#     # Use secure connection (SSL/TLS).
+#     secure: false
     # auth:
     #   user:
     #   password:
@@ -93,3 +96,6 @@ auth:
     secret: Hqu1CXlmGF14oHV8ADso
     # Token expiration time in seconds
     expiration: 604800 # 7 days
+    location:
+      from: Cookie
+      name: token

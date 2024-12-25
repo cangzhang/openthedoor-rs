@@ -14,10 +14,10 @@ impl LoginResponse {
     #[must_use]
     pub fn new(user: &users::Model, token: &String) -> Self {
         Self {
-            token: token.to_string(),
-            pid: user.pid.to_string(),
             name: user.name.clone(),
             is_verified: user.email_verified_at.is_some(),
+            pid: user.pid.to_string(),
+            token: token.to_string(),
         }
     }
 }
