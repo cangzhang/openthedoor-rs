@@ -1,0 +1,7 @@
+services:
+        openthedoor:
+                image: cangzhang/openthedoor:0.1.2
+                restart: unless-stopped
+                command: start -b 0.0.0.0
+                ports:
+                        - "5150:5150"
