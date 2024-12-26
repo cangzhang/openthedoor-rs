@@ -1,44 +1,21 @@
-import { redirect } from 'react-router';
-import ky from 'ky';
+import { useOutletContext } from 'react-router';
 
 export type IUser = {
   name: string;
   email: string;
   pid: string;
-}
-
-export async function loader({ request }: { request: Request }) {
-  try {
-    const ck = request.headers.get('Cookie');
-    if (!ck) {
-      return redirect('/login', {
-        headers: {
-          'Set-Cookie': 'token=; Path=/; HttpOnly; SameSite=Strict;',
-        },
-      });
-    }
-    const user: IUser = await ky(`${process.env.API_HOST}/api/auth/current`, {
-      headers: {
-        Cookie: request.headers.get('Cookie') || '',
-      },
-    }).then((r) => r.json());
-    return { user };
-  } catch (error) {
-    return { user: null };
-  }
-}
+};
 
 export function meta() {
-  return [
-    { title: 'Open the Door' },
-  ];
+  return [{ title: 'Home' }];
 }
 
-export default function Home({ loaderData }: { loaderData: { user: IUser | null } }) {
+export default function Home() {
+  const data = useOutletContext();
   return (
     <div>
       User:
-      <pre>{JSON.stringify(loaderData.user, null, 2)}</pre>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
     </div>
   );
 }
